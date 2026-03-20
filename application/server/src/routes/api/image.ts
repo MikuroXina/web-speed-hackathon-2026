@@ -10,7 +10,7 @@ import { Hono } from "hono";
 import { Env } from "../../env";
 
 // 変換した画像の拡張子
-const EXTENSION = "jpg";
+const EXTENSION = "avif";
 
 export const imageRouter = new Hono<Env>();
 
