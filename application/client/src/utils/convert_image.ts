@@ -1,5 +1,9 @@
-import { initializeImageMagick, ImageMagick, MagickFormat } from "@imagemagick/magick-wasm";
-import { dump, insert, ImageIFD } from "piexifjs";
+import {
+  initializeImageMagick,
+  ImageMagick,
+  MagickFormat,
+  ImageProfile,
+} from "@imagemagick/magick-wasm";
 
 interface Options {
   extension: MagickFormat;
@@ -15,26 +19,16 @@ export async function convertImage(file: File, options: Options): Promise<Blob> 
       img.format = options.extension;
 
       const comment = img.comment;
+      if (comment) {
+        const profile = new ImageProfile(
+          "image:imageDescription",
+          new TextEncoder().encode(comment),
+        );
+        img.setProfile(profile);
+      }
 
       img.write((output) => {
-        if (comment == null) {
-          resolve(new Blob([output as Uint8Array<ArrayBuffer>]));
-          return;
-        }
-
-        // ImageMagick では EXIF の ImageDescription フィールドに保存されているデータが
-        // 非標準の Comment フィールドに移されてしまうため
-        // piexifjs を使って ImageDescription フィールドに書き込む
-        const binary = Array.from(output as Uint8Array<ArrayBuffer>)
-          .map((b) => String.fromCharCode(b))
-          .join("");
-        const descriptionBinary = Array.from(new TextEncoder().encode(comment))
-          .map((b) => String.fromCharCode(b))
-          .join("");
-        const exifStr = dump({ "0th": { [ImageIFD.ImageDescription]: descriptionBinary } });
-        const outputWithExif = insert(exifStr, binary);
-        const bytes = Uint8Array.from(outputWithExif.split("").map((c) => c.charCodeAt(0)));
-        resolve(new Blob([bytes]));
+        resolve(new Blob([output as Uint8Array<ArrayBuffer>]));
       });
     });
   });
