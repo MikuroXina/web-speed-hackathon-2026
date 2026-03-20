@@ -42,12 +42,12 @@ test.describe("投稿詳細 - 動画", () => {
 
   test("動画が自動再生され、クリックで一時停止・再生を切り替えられる", async ({ page }) => {
     await page.goto("/");
-    const movieArticle = page.locator('article:has(button[aria-label="動画プレイヤー"])').first();
+    const movieArticle = page.locator('article:has(div[aria-label="動画プレイヤー"])').first();
     await expect(movieArticle).toBeVisible({ timeout: 30_000 });
     await movieArticle.locator("time").first().click();
     await page.waitForURL("**/posts/*", { timeout: 10_000 });
 
-    const videoPlayer = page.locator('button[aria-label="動画プレイヤー"]').first();
+    const videoPlayer = page.locator('div[aria-label="動画プレイヤー"]').first();
     await expect(videoPlayer).toBeVisible({ timeout: 30_000 });
 
     // VRT: 動画再生中

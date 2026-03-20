@@ -10,7 +10,7 @@ import { Hono } from "hono";
 import { Env } from "../../env";
 
 // 変換した動画の拡張子
-const EXTENSION = "gif";
+const EXTENSION = "webm";
 
 export const movieRouter = new Hono<Env>();
 

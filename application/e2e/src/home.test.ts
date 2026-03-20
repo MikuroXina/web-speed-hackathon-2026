@@ -27,7 +27,7 @@ test.describe("ホーム", () => {
   });
 
   test("動画が自動再生される", async ({ page }) => {
-    const videoPlayer = page.locator('article button[aria-label="動画プレイヤー"]').first();
+    const videoPlayer = page.locator('article div[aria-label="動画プレイヤー"]').first();
 
     await waitForVisibleMedia(page);
 
