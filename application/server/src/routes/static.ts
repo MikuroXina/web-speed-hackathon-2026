@@ -1,6 +1,7 @@
 import history from "connect-history-api-fallback";
 import { Router } from "express";
 import serveStatic from "serve-static";
+import compression from "compression";
 
 import {
   CLIENT_DIST_PATH,
@@ -9,6 +10,8 @@ import {
 } from "@web-speed-hackathon-2026/server/src/paths";
 
 export const staticRouter = Router();
+
+staticRouter.use(compression({ level: 6 }));
 
 // SPA 対応のため、ファイルが存在しないときに index.html を返す
 staticRouter.use(history());
