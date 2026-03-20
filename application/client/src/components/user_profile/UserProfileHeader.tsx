@@ -1,4 +1,3 @@
-import { FastAverageColor } from "fast-average-color";
 import moment from "moment";
 import { ReactEventHandler, useCallback, useState } from "react";
 
@@ -14,7 +13,8 @@ export const UserProfileHeader = ({ user }: Props) => {
 
   // 画像の平均色を取得します
   /** @type {React.ReactEventHandler<HTMLImageElement>} */
-  const handleLoadImage = useCallback<ReactEventHandler<HTMLImageElement>>((ev) => {
+  const handleLoadImage = useCallback<ReactEventHandler<HTMLImageElement>>(async (ev) => {
+    const { FastAverageColor } = await import("fast-average-color");
     const fac = new FastAverageColor();
     const { rgb } = fac.getColor(ev.currentTarget, { mode: "precision" });
     setAverageColor(rgb);
