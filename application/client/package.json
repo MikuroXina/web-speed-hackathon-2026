@@ -76,6 +76,7 @@
     "@types/react-dom": "19.2.1",
     "@types/react-syntax-highlighter": "15.5.13",
     "@types/redux-form": "^8.3.11",
+    "@vitejs/plugin-react": "6.0.1",
     "babel-loader": "10.0.0",
     "copy-webpack-plugin": "13.0.1",
     "css-loader": "7.1.2",
