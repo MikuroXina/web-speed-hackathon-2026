@@ -20,3 +20,5 @@ export const SearchContainer = () => {
     </InfiniteScroll>
   );
 };
+
+export default SearchContainer;

@@ -13,3 +13,5 @@ export const TimelineContainer = () => {
     </InfiniteScroll>
   );
 };
+
+export default TimelineContainer;

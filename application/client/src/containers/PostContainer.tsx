@@ -38,3 +38,5 @@ export const PostContainer = () => {
   const { postId } = useParams();
   return <PostContainerContent key={postId} postId={postId} />;
 };
+
+export default PostContainer;

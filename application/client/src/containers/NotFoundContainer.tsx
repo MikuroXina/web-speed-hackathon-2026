@@ -8,3 +8,5 @@ export const NotFoundContainer = () => {
     </>
   );
 };
+
+export default NotFoundContainer;
