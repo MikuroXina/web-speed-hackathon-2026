@@ -4,7 +4,6 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   plugins: [nodePolyfills(), babel()],
-  publicDir: "../public",
   build: {
     outDir: "../dist",
     emptyOutDir: true,
