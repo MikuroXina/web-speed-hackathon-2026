@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
+    "analyze": "VITE_ANALYZE=true vite build",
     "typecheck": "tsc"
   },
   "dependencies": {
