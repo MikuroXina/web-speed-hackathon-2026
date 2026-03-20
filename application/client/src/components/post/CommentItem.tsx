@@ -1,8 +1,7 @@
-import moment from "moment";
-
 import { Link } from "@web-speed-hackathon-2026/client/src/components/foundation/Link";
 import { TranslatableText } from "@web-speed-hackathon-2026/client/src/components/post/TranslatableText";
 import { getProfileImagePath } from "@web-speed-hackathon-2026/client/src/utils/get_path";
+import { longYearMonthDay } from "../../utils/full_year_month_day";
 
 interface Props {
   comment: Models.Comment;
@@ -42,8 +41,8 @@ export const CommentItem = ({ comment }: Props) => {
             <TranslatableText text={comment.text} />
           </div>
           <p className="text-cax-text-muted pt-1 text-xs">
-            <time dateTime={moment(comment.createdAt).toISOString()}>
-              {moment(comment.createdAt).locale("ja").format("LL")}
+            <time dateTime={new Date(comment.createdAt).toISOString()}>
+              {longYearMonthDay(comment.createdAt)}
             </time>
           </p>
         </div>

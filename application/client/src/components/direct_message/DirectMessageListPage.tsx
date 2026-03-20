@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@web-speed-hackathon-2026/client/src/components/foundation/Button";
@@ -7,6 +6,40 @@ import { Link } from "@web-speed-hackathon-2026/client/src/components/foundation
 import { useWs } from "@web-speed-hackathon-2026/client/src/hooks/use_ws";
 import { fetchJSON } from "@web-speed-hackathon-2026/client/src/utils/fetchers";
 import { getProfileImagePath } from "@web-speed-hackathon-2026/client/src/utils/get_path";
+import { Temporal } from "@js-temporal/polyfill";
+
+function timeFromNow(temporalInstant: Temporal.Instant) {
+  const now = Temporal.Now.instant();
+  const duration = now.until(temporalInstant, { smallestUnit: "seconds" });
+
+  let unit: Intl.RelativeTimeFormatUnit;
+  let value: number;
+  if (Math.abs(duration.years) >= 1) {
+    unit = "year";
+    value = duration.years;
+  } else if (Math.abs(duration.months) >= 1) {
+    unit = "month";
+    value = duration.months;
+  } else if (Math.abs(duration.weeks) >= 1) {
+    unit = "week";
+    value = duration.weeks;
+  } else if (Math.abs(duration.days) >= 1) {
+    unit = "day";
+    value = duration.days;
+  } else if (Math.abs(duration.hours) >= 1) {
+    unit = "hour";
+    value = duration.hours;
+  } else if (Math.abs(duration.minutes) >= 1) {
+    unit = "minute";
+    value = duration.minutes;
+  } else {
+    unit = "second";
+    value = duration.seconds;
+  }
+
+  const formatter = new Intl.RelativeTimeFormat("ja", { numeric: "auto" });
+  return formatter.format(value, unit);
+}
 
 interface Props {
   activeUser: Models.User;
@@ -100,7 +133,7 @@ export const DirectMessageListPage = ({ activeUser, newDmModalId }: Props) => {
                             className="text-cax-text-subtle text-xs"
                             dateTime={lastMessage.createdAt}
                           >
-                            {moment(lastMessage.createdAt).locale("ja").fromNow()}
+                            {timeFromNow(Temporal.Instant.from(lastMessage.createdAt))}
                           </time>
                         )}
                       </div>
