@@ -5,7 +5,7 @@ interface SoundMetadata {
   title?: string;
 }
 
-export async function extractMetadataFromSound(data: Buffer): Promise<SoundMetadata> {
+export async function extractMetadataFromSound(data: Uint8Array): Promise<SoundMetadata> {
   try {
     const metadata = await MusicMetadata.parseBuffer(data);
     return {

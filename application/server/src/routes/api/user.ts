@@ -1,43 +1,46 @@
-import { Router } from "express";
 import httpErrors from "http-errors";
 
 import { Post, User } from "@web-speed-hackathon-2026/server/src/models";
+import { Hono } from "hono";
+import { Env } from "../../env";
 
-export const userRouter = Router();
+export const userRouter = new Hono<Env>();
 
-userRouter.get("/me", async (req, res) => {
-  if (req.session.userId === undefined) {
+userRouter.get("/me", async (c) => {
+  const userId = c.get("session").get("userId");
+  if (userId == undefined) {
     throw new httpErrors.Unauthorized();
   }
-  const user = await User.findByPk(req.session.userId);
+  const user = await User.findByPk(userId);
 
   if (user === null) {
     throw new httpErrors.NotFound();
   }
 
-  return res.status(200).type("application/json").send(user);
+  return c.json(user);
 });
 
-userRouter.put("/me", async (req, res) => {
-  if (req.session.userId === undefined) {
+userRouter.put("/me", async (c) => {
+  const userId = c.get("session").get("userId");
+  if (userId == undefined) {
     throw new httpErrors.Unauthorized();
   }
-  const user = await User.findByPk(req.session.userId);
+  const user = await User.findByPk(userId);
 
   if (user === null) {
     throw new httpErrors.NotFound();
   }
 
-  Object.assign(user, req.body);
+  Object.assign(user, await c.req.json());
   await user.save();
 
-  return res.status(200).type("application/json").send(user);
+  return c.json(user);
 });
 
-userRouter.get("/users/:username", async (req, res) => {
+userRouter.get("/users/:username", async (c) => {
   const user = await User.findOne({
     where: {
-      username: req.params.username,
+      username: c.req.param("username"),
     },
   });
 
@@ -45,13 +48,13 @@ userRouter.get("/users/:username", async (req, res) => {
     throw new httpErrors.NotFound();
   }
 
-  return res.status(200).type("application/json").send(user);
+  return c.json(user);
 });
 
-userRouter.get("/users/:username/posts", async (req, res) => {
+userRouter.get("/users/:username/posts", async (c) => {
   const user = await User.findOne({
     where: {
-      username: req.params.username,
+      username: c.req.param("username"),
     },
   });
 
@@ -60,12 +63,12 @@ userRouter.get("/users/:username/posts", async (req, res) => {
   }
 
   const posts = await Post.findAll({
-    limit: req.query["limit"] != null ? Number(req.query["limit"]) : undefined,
-    offset: req.query["offset"] != null ? Number(req.query["offset"]) : undefined,
+    limit: c.req.query("limit") != null ? Number(c.req.query("limit")) : undefined,
+    offset: c.req.query("offset") != null ? Number(c.req.query("offset")) : undefined,
     where: {
       userId: user.id,
     },
   });
 
-  return res.status(200).type("application/json").send(posts);
+  return c.json(posts);
 });

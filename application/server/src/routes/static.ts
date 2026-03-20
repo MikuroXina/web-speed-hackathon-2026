@@ -1,38 +1,27 @@
-import history from "connect-history-api-fallback";
-import { Router } from "express";
-import serveStatic from "serve-static";
-import compression from "compression";
+import { Hono } from "hono";
+import { serveStatic } from "@hono/node-server/serve-static";
 
-import {
-  CLIENT_DIST_PATH,
-  PUBLIC_PATH,
-  UPLOAD_PATH,
-} from "@web-speed-hackathon-2026/server/src/paths";
+import { compress } from "hono/compress";
 
-export const staticRouter = Router();
+export const staticRouter = new Hono();
 
-staticRouter.use(compression({ level: 6 }));
+staticRouter.use(compress());
 
 // SPA 対応のため、ファイルが存在しないときに index.html を返す
-staticRouter.use(history());
+staticRouter.notFound(async (c) => c.redirect("/index.html"));
 
 staticRouter.use(
-  serveStatic(UPLOAD_PATH, {
-    etag: false,
-    lastModified: false,
+  serveStatic({
+    root: "../upload/",
   }),
 );
-
 staticRouter.use(
-  serveStatic(PUBLIC_PATH, {
-    etag: false,
-    lastModified: false,
+  serveStatic({
+    root: "../public/",
   }),
 );
-
 staticRouter.use(
-  serveStatic(CLIENT_DIST_PATH, {
-    etag: false,
-    lastModified: false,
+  serveStatic({
+    root: "../dist/",
   }),
 );
