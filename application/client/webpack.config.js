@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const SRC_PATH = path.resolve(__dirname, "./src");
 const PUBLIC_PATH = path.resolve(__dirname, "../public");
@@ -25,6 +26,7 @@ const config = {
     ],
     static: [PUBLIC_PATH, UPLOAD_PATH],
   },
+  watch: process.env.NODE_ENV === "development",
   devtool: "inline-source-map",
   entry: {
     main: [
@@ -94,6 +96,7 @@ const config = {
       inject: false,
       template: path.resolve(SRC_PATH, "./index.html"),
     }),
+    ...(process.env.NODE_ENV === "development" ? [new BundleAnalyzerPlugin()] : [])
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".mjs", ".cjs", ".jsx", ".js"],
@@ -128,11 +131,7 @@ const config = {
     },
   },
   optimization: {
-    minimize: false,
-    splitChunks: false,
-    concatenateModules: false,
     usedExports: false,
-    providedExports: false,
     sideEffects: false,
   },
   cache: false,
