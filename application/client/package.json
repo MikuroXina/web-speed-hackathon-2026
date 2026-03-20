@@ -5,13 +5,14 @@
   "license": "MPL-2.0",
   "author": "CyberAgent, Inc.",
   "scripts": {
-    "build": "NODE_ENV=development webpack",
-    "build:prod": "NODE_ENV=production webpack",
+    "dev": "vite build --watch",
+    "build": "vite build",
     "typecheck": "tsc"
   },
   "dependencies": {
     "@ffmpeg/core": "0.12.10",
     "@ffmpeg/ffmpeg": "0.12.15",
+    "@ffmpeg/util": "0.12.2",
     "@imagemagick/magick-wasm": "0.0.37",
     "@mlc-ai/web-llm": "0.2.80",
     "@web-speed-hackathon-2026/client": "workspace:*",
@@ -85,6 +86,9 @@
     "postcss-preset-env": "10.4.0",
     "react-markdown": "10.1.0",
     "typescript": "5.9.3",
+    "vite": "8.0.1",
+    "vite-plugin-babel": "1.6.0",
+    "vite-plugin-node-polyfills": "0.25.0",
     "webpack": "5.102.1",
     "webpack-bundle-analyzer": "5.2.0",
     "webpack-cli": "6.0.1",

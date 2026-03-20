@@ -33,6 +33,7 @@ const config = {
       "core-js",
       "regenerator-runtime/runtime",
       "jquery-binarytransport",
+      "@ffmpeg/ffmpeg",
       path.resolve(SRC_PATH, "./index.css"),
       path.resolve(SRC_PATH, "./buildinfo.ts"),
       path.resolve(SRC_PATH, "./index.tsx"),
@@ -79,7 +80,7 @@ const config = {
       BUILD_DATE: new Date().toISOString(),
       // Heroku では SOURCE_VERSION 環境変数から commit hash を参照できます
       COMMIT_HASH: process.env.SOURCE_VERSION || "",
-      NODE_ENV: "development",
+      NODE_ENV: process.env.NODE_ENV,
     }),
     new MiniCssExtractPlugin({
       filename: "styles/[name].css",
@@ -96,7 +97,7 @@ const config = {
       inject: false,
       template: path.resolve(SRC_PATH, "./index.html"),
     }),
-    ...(process.env.NODE_ENV === "development" ? [new BundleAnalyzerPlugin()] : [])
+    new BundleAnalyzerPlugin()
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".mjs", ".cjs", ".jsx", ".js"],
