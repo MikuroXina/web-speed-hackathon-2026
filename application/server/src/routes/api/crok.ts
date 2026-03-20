@@ -33,7 +33,7 @@ crokRouter.get("/crok", async (c) => {
     let messageId = 0;
 
     // TTFT (Time to First Token)
-    await stream.sleep(3000);
+    await stream.sleep(300);
 
     for (const char of response) {
       if (stream.closed) {
