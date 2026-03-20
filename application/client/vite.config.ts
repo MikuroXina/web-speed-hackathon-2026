@@ -14,6 +14,22 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              test: /debug/,
+              name: "debug",
+            },
+            {
+              test: /highlight.js/,
+              name: "highlight",
+            },
+          ],
+        },
+      },
+    },
   },
   test: {
     includeSource: ["src/**/*.ts"],
