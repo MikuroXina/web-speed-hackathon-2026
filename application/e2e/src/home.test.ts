@@ -53,7 +53,7 @@ test.describe("ホーム", () => {
   test("投稿クリック → 投稿詳細に遷移する", async ({ page }) => {
     const firstArticle = page.locator("article").first();
     await expect(firstArticle).toBeVisible({ timeout: 30_000 });
-    await firstArticle.click();
+    await firstArticle.click({ position: { x: 10, y: 200 } });
     await page.waitForURL("**/posts/*", { timeout: 10_000 });
     expect(page.url()).toMatch(/\/posts\/[a-zA-Z0-9-]+/);
   });
