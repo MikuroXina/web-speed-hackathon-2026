@@ -13,7 +13,7 @@ import { faImages, faMusic, faVideo } from "@fortawesome/free-solid-svg-icons";
 const MAX_UPLOAD_BYTES_LIMIT = 10 * 1024 * 1024;
 
 interface SubmitParams {
-  images: File[];
+  images: { file: File; alt: string | undefined }[];
   movie: File | undefined;
   sound: File | undefined;
   text: string;
@@ -56,9 +56,10 @@ export const NewPostModalPage = ({ id, hasError, isLoading, onResetError, onSubm
 
       Promise.all(
         files.map((file) =>
-          convertImage(file, { extension: MagickFormat.Avif }).then(
-            (blob) => new File([blob], "converted.avif", { type: "image/avif" }),
-          ),
+          convertImage(file, { extension: MagickFormat.Avif }).then(({ blob, alt }) => ({
+            file: new File([blob], "converted.avif", { type: "image/avif" }),
+            alt,
+          })),
         ),
       )
         .then((convertedFiles) => {

@@ -1,5 +1,4 @@
-import { MouseEvent, useCallback, useId, useMemo } from "react";
-import ExifReader from "exifreader";
+import { MouseEvent, useCallback, useId } from "react";
 
 import { Button } from "@web-speed-hackathon-2026/client/src/components/foundation/Button";
 import { Modal } from "@web-speed-hackathon-2026/client/src/components/modal/Modal";
@@ -8,12 +7,13 @@ import { fetchBinary } from "@web-speed-hackathon-2026/client/src/utils/fetchers
 
 interface Props {
   src: string;
+  alt: string;
 }
 
 /**
  * アスペクト比を維持したまま、要素のコンテンツボックス全体を埋めるように画像を拡大縮小します
  */
-export const CoveredImage = ({ src }: Props) => {
+export const CoveredImage = ({ src, alt }: Props) => {
   const dialogId = useId();
   // ダイアログの背景をクリックしたときに投稿詳細ページに遷移しないようにする
   const handleDialogClick = useCallback((ev: MouseEvent<HTMLDialogElement>) => {
@@ -21,12 +21,6 @@ export const CoveredImage = ({ src }: Props) => {
   }, []);
 
   const { data, isLoading } = useFetch(src, fetchBinary);
-
-  const alt = useMemo(() => {
-    const tags = data ? ExifReader.load(data) : null;
-    const raw = tags?.["ImageDescription"]?.value as string | undefined;
-    return raw != null ? new TextDecoder().decode(Buffer.from(raw, "binary")) : "";
-  }, [data]);
 
   if (isLoading || data === null) {
     return null;
