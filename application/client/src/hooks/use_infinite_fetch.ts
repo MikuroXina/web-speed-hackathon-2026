@@ -36,11 +36,10 @@ export function useInfiniteFetch<T>(
       offset,
     };
 
-    const params = new URLSearchParams([
-      ["limit", `${LIMIT}`],
-      ["offset", `${offset}`],
-    ]);
-    void fetcher(`${apiPath}?${params}`).then(
+    const url = new URL(apiPath, location.origin);
+    url.searchParams.append("limit", `${LIMIT}`);
+    url.searchParams.append("offset", `${offset}`);
+    void fetcher(url.toString()).then(
       (allData) => {
         setResult((cur) => ({
           ...cur,
