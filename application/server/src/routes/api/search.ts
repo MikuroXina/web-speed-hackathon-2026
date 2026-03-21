@@ -54,7 +54,7 @@ searchRouter.get("/search", async (req, res) => {
       include: [
         {
           association: "user",
-          attributes: { exclude: ["profileImageId"] },
+          attributes: { exclude: ["profileImage.id"] },
           include: [{ association: "profileImage" }],
           required: true,
           where: {

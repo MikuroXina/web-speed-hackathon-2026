@@ -78,7 +78,7 @@ export function initUser(sequelize: Sequelize) {
     {
       sequelize,
       defaultScope: {
-        attributes: { exclude: ["profileImageId"] },
+        attributes: { exclude: ["profileImage.id"] },
         include: { association: "profileImage" },
       },
     },
