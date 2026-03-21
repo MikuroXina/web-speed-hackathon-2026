@@ -14,9 +14,7 @@ export function useHasContentBelow(
   const [hasContentBelow, setHasContentBelow] = useState(false);
 
   useEffect(() => {
-    let active = true;
-    const check = () => {
-      if (!active) return;
+    let id = requestAnimationFrame(function check() {
       const endEl = contentEndRef.current;
       const barEl = boundaryRef.current;
       if (endEl && barEl) {
@@ -24,11 +22,10 @@ export function useHasContentBelow(
         const barRect = barEl.getBoundingClientRect();
         setHasContentBelow(endRect.top > barRect.top);
       }
-      scheduler.postTask(check, { priority: "user-blocking", delay: 1 });
-    };
-    scheduler.postTask(check, { priority: "user-blocking", delay: 1 });
+      id = requestAnimationFrame(check);
+    });
     return () => {
-      active = false;
+      cancelAnimationFrame(id);
     };
   }, [contentEndRef, boundaryRef]);
 

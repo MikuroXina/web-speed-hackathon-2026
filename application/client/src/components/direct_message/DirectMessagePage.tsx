@@ -75,15 +75,15 @@ export const DirectMessagePage = ({
   );
 
   useEffect(() => {
-    const id = setInterval(() => {
-      const height = Number(window.getComputedStyle(document.body).height.replace("px", ""));
+    let id = requestAnimationFrame(function keepBottom() {
+      const height = document.body.scrollHeight;
       if (height !== scrollHeightRef.current) {
-        scrollHeightRef.current = height;
         window.scrollTo(0, height);
       }
-    }, 1);
+      id = requestAnimationFrame(keepBottom);
+    });
 
-    return () => clearInterval(id);
+    return () => cancelAnimationFrame(id);
   }, []);
 
   if (conversationError != null) {
