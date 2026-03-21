@@ -104,21 +104,13 @@ export const NewPostModalPage = ({ id, hasError, isLoading, onResetError, onSubm
     setHasFileError(isValid !== true);
     if (isValid) {
       setIsConverting(true);
-
-      convertMovie(file, { extension: "webm", size: undefined })
-        .then((converted) => {
-          setParams((params) => ({
-            ...params,
-            images: [],
-            movie: new File([converted], "converted.webm", {
-              type: "video/webm",
-            }),
-            sound: undefined,
-          }));
-
-          setIsConverting(false);
-        })
-        .catch(console.error);
+      setParams((params) => ({
+        ...params,
+        images: [],
+        movie: file,
+        sound: undefined,
+      }));
+      setIsConverting(false);
     }
   }, []);
 
